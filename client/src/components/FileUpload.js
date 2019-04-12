@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from "react";
 import Message from "./Message";
+import ProgressBar from "./ProgressBar";
 import axios from "axios";
 
 // holds state
@@ -13,7 +14,9 @@ const FileUpload = () => {
   const [uploadedFile, setUploadedFile] = useState({});
 
   const [message, setMessage] = useState("");
+  const [uploadPercentage, setUploadPercentage] = useState(0);
 
+  // METHODS
   const onChange = e => {
     // with hooks, instead of using this.setState, we use the state descriptors we set using useState to change the value
 
@@ -34,9 +37,20 @@ const FileUpload = () => {
 
     try {
       // we don't have to specify "localhost:3000" because we added a proxy in package.json
+      // with axios, we can grab upload progress - progressEvent has .loaded and .total
       const res = await axios.post("/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data"
+        },
+        onUploadProgress: progressEvent => {
+          setUploadPercentage(
+            parseInt(
+              Math.round((progressEvent.loaded * 100) / progressEvent.total)
+            )
+          );
+
+          // Clear percentage after 10 seconds
+          setTimeout(() => setUploadPercentage(0), 5000);
         }
       });
 
@@ -68,6 +82,8 @@ const FileUpload = () => {
             {filename}
           </label>
         </div>
+
+        <ProgressBar percentage={uploadPercentage} />
 
         <input
           type="submit"
