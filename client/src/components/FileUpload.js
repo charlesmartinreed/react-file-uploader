@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from "react";
+import Message from "./Message";
 import axios from "axios";
 
 // holds state
@@ -10,6 +11,8 @@ const FileUpload = () => {
 
   // since we're returning an object from the backend upon succesful upload, we set our initial state for uploadedFile to be an empty object
   const [uploadedFile, setUploadedFile] = useState({});
+
+  const [message, setMessage] = useState("");
 
   const onChange = e => {
     // with hooks, instead of using this.setState, we use the state descriptors we set using useState to change the value
@@ -39,17 +42,20 @@ const FileUpload = () => {
 
       const { fileName, filePath } = res.data;
       setUploadedFile({ fileName, filePath });
+      setMessage("File Uploaded!");
     } catch (err) {
       if (err.response.status === 500) {
-        console.log("There was a problem with the server");
+        setMessage("There was a problem with the server");
       } else {
-        console.log(err.response.data.msg);
+        setMessage(err.response.data.msg);
       }
     }
   };
 
+  // if there's a message, per the state, display it. If not, display nothing.
   return (
     <Fragment>
+      {message ? <Message msg={message} /> : null}
       <form onSubmit={onSubmit}>
         <div className="custom-file mb-4">
           <input
@@ -69,6 +75,15 @@ const FileUpload = () => {
           className="btn btn-primary btn-block mt-2"
         />
       </form>
+
+      {uploadedFile ? (
+        <div className="row mt-5">
+          <div className="col-md-6 m-auto">
+            <h3 className="text-center">{uploadedFile.fileName}</h3>
+            <img style={{ width: "100%" }} src={uploadedFile.filePath} alt="" />
+          </div>
+        </div>
+      ) : null}
     </Fragment>
   );
 };
