@@ -1,6 +1,7 @@
 // using hooks, so functional components are fine here
 
 import React, { useState } from "react";
+// import ImageGallery from "./ImageGallery";
 import axios from "axios";
 
 // state holds file, filename
@@ -70,6 +71,18 @@ const FileUpload = () => {
           className="btn btn-primary btn-block mt-4"
         />
       </form>
+      {uploadedFile ? (
+        <div className="row mt-5">
+          <div className="col-md-12 m-auto bg-light">
+            <h3 className="text-center">{uploadedFile.fileName}</h3>
+            <img
+              style={{ width: "100%" }}
+              src={uploadedFile.filePath}
+              alt={uploadedFile.fileName}
+            />
+          </div>
+        </div>
+      ) : null}
     </>
   );
 };
