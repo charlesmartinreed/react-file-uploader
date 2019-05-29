@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import { FaReact } from "react-icons/fa";
+import FileUpload from "./components/FileUpload";
 // import { } from 'react-icons/fa'
 
 const App = () => (
@@ -8,7 +9,7 @@ const App = () => (
     <h4 className="display-4 text-center mb-4">
       <FaReact /> React Image Uploader
     </h4>
-    // file upload component
+    <FileUpload />
   </div>
 );
 

@@ -1,6 +1,9 @@
 ## This project uses:
 
-- React (including Hooks for stateful functional components)
-- Express
+- create-react-app
+- React Hooks
+- express
 - express-fileuploader
-- Axios for fetching
+- axios
+- reactstrap
+- react-icons
